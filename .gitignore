@@ -1,0 +1,10 @@
+node_modules/
+dist/
+cores/
+build/
+roms/
+.vscode/
+modloader64-config.json
+modloader64-p2-config.json
+CustomActorToolkit/
+libs/

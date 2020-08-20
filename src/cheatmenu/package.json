@@ -1,0 +1,13 @@
+{
+  "name": "cheatmenu",
+  "version": "0.1.0",
+  "description": "A basic GUI for cheating in items. (Should be) OoTOnline safe",
+  "main": "cheatmenu.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "JerryWester",
+  "license": "ISC",
+  "core": "OcarinaofTime"
+}
