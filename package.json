@@ -1,13 +1,19 @@
 {
   "name": "cheatmenu",
-  "version": "0.1.0",
+  "version": "0.1.0a",
   "description": "A basic GUI for cheating in items. (Should be) OoTOnline safe",
   "main": "cheatmenu.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JerryWester/ML64OoTCheatMenu.git"
+  },
+  "modloader64_deps": {
+    "Z64Lib": "https://github.com/hylian-modding/ML64-Z64Lib.git"
+  },
   "keywords": [],
   "author": "JerryWester",
-  "license": "ISC",
-  "modloader64_deps": {}
+  "license": "ISC"
 }
