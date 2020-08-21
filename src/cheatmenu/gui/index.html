@@ -3,15 +3,33 @@
     <head>
         <title>Cheat Menu</title>
         <style>
+            html {
+                padding: 0%;
+                margin: 0%;
+                border: 0%;
+                min-width: 100%;
+                min-height: 100%;
+            }
 
+            .bottom-right {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+            }
         </style>
     </head>
     <body>
+        <div class="bottom-right">0.1.1</div>
         <table>
             <tr>
                 <td><input id="heartsLocked" type="checkbox"></td>
                 <td>Hearts: </td>
                 <td><input id="hearts" type="number" min="0" max="20" step="1"> + <input id="qhearts" type="number" min="0" max="3" step="1">/4</td>
+            </tr>
+            <tr>
+                <td><input id="magicLocked" type="checkbox"></td>
+                <td>Magic: </td>
+                <td><input id="magic" type="number" min="0" max="48">
             </tr>
             <tr>
                 <td><input id="rupeesLocked" type="checkbox"></td>
@@ -47,6 +65,11 @@
                 <td><input id="bombchusLocked" type="checkbox"></td>
                 <td>Bombchus: </td>
                 <td><input id="bombchus" type="number" min="0" max="99" step="1"></td>
+            </tr>
+            <tr>
+                <td><input id="beansLocked" type="checkbox"></td>
+                <td>Magic Beans: </td>
+                <td><input id="beans" type="number" min="0" max="99" step="1"></td>
             </tr>
             <tr>
                 <td><input id="arrowsLocked" type="checkbox"></td>

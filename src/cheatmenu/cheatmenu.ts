@@ -9,6 +9,8 @@ import Vector3 from 'modloader64_api/math/Vector3';
 class cheatmenu_config{
     "hearts": number;
     "heartsLocked": boolean;
+    "magic": number;
+    "magicLocked": boolean;
     "rupees": number;
     "rupeesLocked": boolean;
     "time": number;
@@ -27,11 +29,13 @@ class cheatmenu_config{
     "bombsLocked": boolean;
     "bombchus": number;
     "bombchusLocked": boolean;
+    "beans": number;
+    "beansLocked": boolean;
     "arrows": number;
     "arrowsLocked": boolean;
-    [key: string]: any;
     constructor(){
         this.heartsLocked = false;
+        this.magicLocked = false;
         this.rupeesLocked = false;
         this.timeLocked = false;
         this.position = new Vector3(0, 0, 0);
@@ -43,6 +47,7 @@ class cheatmenu_config{
         this.seedsLocked = false;
         this.bombsLocked = false;
         this.bombchusLocked = false;
+        this.beansLocked = false;
         this.arrowsLocked = false;
     }
 }
@@ -69,8 +74,11 @@ class cheatmenu implements IPlugin{
             if(this.config.heartsLocked){
                 this.core.save.health = this.config.hearts;
             }
+            if(this.config.magicLocked){
+                this.core.save.magic_current = this.config.magic;
+            }
             if(this.config.rupeesLocked){
-                this.ModLoader.emulator.rdramWrite16(0x11A604, this.config.rupees);
+                this.core.save.rupee_count = this.config.rupees;
             }
             if(this.config.timeLocked){
                 this.core.save.world_time = this.config.time;
@@ -90,6 +98,9 @@ class cheatmenu implements IPlugin{
             if(this.config.bombchusLocked){
                 this.core.save.inventory.bombchuCount = this.config.bombchus;
             }
+            if(this.config.beansLocked){
+                this.core.save.inventory.magicBeansCount = this.config.beans;
+            }
             if(this.config.arrowsLocked){
                 this.core.save.inventory.arrows = this.config.arrows;
             }
@@ -97,6 +108,51 @@ class cheatmenu implements IPlugin{
             if(this.ModLoader.emulator.rdramRead8(0x1c84b5) === 0x20){
                 // ... Set upwards velocity (?)
                 this.ModLoader.emulator.rdramWrite16(0x1daa90, 0x40cb);
+            }
+            
+            if(this.config.hearts !== this.core.save.health){
+                this.config.hearts = this.core.save.health;
+                this.ModLoader.gui.tunnel.send("cheatmenu:HealthUpdate", this.config.hearts);
+            }
+            if(this.config.magic !== this.core.save.magic_current){
+                this.config.magic = this.core.save.magic_current;
+                this.ModLoader.gui.tunnel.send("cheatmenu:MagicUpdate", this.config.magic);
+            }
+            if(this.config.rupees !== this.core.save.rupee_count){
+                this.config.rupees = this.core.save.rupee_count;
+                this.ModLoader.gui.tunnel.send("cheatmenu:RupeeUpdate", this.config.rupees);
+            }
+            if(this.config.time !== this.core.save.world_time){
+                this.config.time = this.core.save.world_time;
+                this.ModLoader.gui.tunnel.send("cheatmenu:TimeUpdate", this.config.time);
+            }
+            if(this.config.dekuNuts !== this.core.save.inventory.dekuNutsCount){
+                this.config.dekuNuts = this.core.save.inventory.dekuNutsCount;
+                this.ModLoader.gui.tunnel.send("cheatmenu:DekuNutUpdate", this.config.dekuNuts);
+            }
+            if(this.config.dekuSticks !== this.core.save.inventory.dekuSticksCount){
+                this.config.dekuSticks = this.core.save.inventory.dekuSticksCount;
+                this.ModLoader.gui.tunnel.send("cheatmenu:DekuStickUpdate", this.config.dekuSticks);
+            }
+            if(this.config.seeds !== this.core.save.inventory.dekuSeeds){
+                this.config.seeds = this.core.save.inventory.dekuSeeds;
+                this.ModLoader.gui.tunnel.send("cheatmenu:SeedUpdate", this.config.seeds);
+            }
+            if(this.config.bombs !== this.core.save.inventory.bombsCount){
+                this.config.bombs = this.core.save.inventory.bombsCount;
+                this.ModLoader.gui.tunnel.send("cheatmenu:BombUpdate", this.config.bombs);
+            }
+            if(this.config.bombchus !== this.core.save.inventory.bombchuCount){
+                this.config.bombchus = this.core.save.inventory.bombchuCount;
+                this.ModLoader.gui.tunnel.send("cheatmenu:BombchuUpdate", this.config.bombchus);
+            }
+            if(this.config.beans !== this.core.save.inventory.magicBeansCount){
+                this.config.beans = this.core.save.inventory.magicBeansCount;
+                this.ModLoader.gui.tunnel.send("cheatmenu:BeanUpdate", this.config.bombchus);
+            }
+            if(this.config.arrows !== this.core.save.inventory.arrows){
+                this.config.arrows = this.core.save.inventory.arrows;
+                this.ModLoader.gui.tunnel.send("cheatmenu:ArrowUpdate", this.config.arrows);
             }
             if(this.config.position.x !== this.core.link.position.getRawPos().readFloatBE(0) || this.config.position.y !== this.core.link.position.getRawPos().readFloatBE(4) || this.config.position.z !== this.core.link.position.getRawPos().readFloatBE(8)){
                 this.config.position.x = this.core.link.position.getRawPos().readFloatBE(0);
@@ -122,38 +178,23 @@ class cheatmenu implements IPlugin{
 
     update(){
         this.core.save.health = this.config.hearts;
+        this.core.save.magic_current = this.config.magic;
         this.core.save.world_time = this.config.time
-        this.ModLoader.emulator.rdramWrite16(0x11A604, this.config.rupees);
+        this.core.save.rupee_count = this.config.rupees;
         this.core.save.inventory.dekuNutsCount = this.config.dekuNuts;
         this.core.save.inventory.dekuSticksCount = this.config.dekuSticks;
         this.core.save.inventory.dekuSeeds = this.config.seeds;
         this.core.save.inventory.bombsCount = this.config.bombs;
         this.core.save.inventory.bombchuCount = this.config.bombchus;
+        this.core.save.inventory.magicBeansCount = this.config.beans;
         this.core.save.inventory.arrows = this.config.arrows;
     }
 
-    requestRefresh(){
-        this.config.hearts = this.core.save.health;
-        this.config.time = this.core.save.world_time;
-        this.config.rupees = this.ModLoader.emulator.rdramRead16(0x11A604);
-        this.config.dekuNuts = this.core.save.inventory.dekuNutsCount;
-        this.config.dekuSticks = this.core.save.inventory.dekuSticksCount;
-        this.config.seeds = this.core.save.inventory.dekuSeeds;
-        this.config.bombs = this.core.save.inventory.bombsCount;
-        this.config.bombchus = this.core.save.inventory.bombchuCount;
-        this.config.arrows = this.core.save.inventory.arrows;
-        this.ModLoader.gui.tunnel.send("cheatmenu:CheatUpdate", this.config);
-    }
 
     @EventHandler(OotEvents.ON_SAVE_LOADED)
-    onSaveLoaded(){
+    requestRefresh(){
         this.saveLoaded = true;
-        this.requestRefresh();
-    }
-
-    @TunnelMessageHandler("cheatmenu:RequestRefresh")
-    onRequestRefresh(){
-        this.requestRefresh();
+        this.ModLoader.gui.tunnel.send("cheatmenu:SaveUpdate", this.config);
     }
 }
 
