@@ -1,13 +1,36 @@
 import {MessageLayer} from 'modloader64_api/MessageLayer';
 import {TunnelMessageHandler, GUITunnelPacket} from 'modloader64_api/GUITunnel';
 import Vector3 from 'modloader64_api/math/Vector3';
+import { cheatmenu_config } from '@cheatmenu/cheatmenu';
 
 const electron = require('electron');
 const ipc = electron.ipcRenderer;
 
 const hooks = {};
 
-let config: any;
+let config: cheatmenu_config;
+let version = document.getElementById("version") as HTMLDivElement;
+version.innerHTML = "0.1.2";
+getGHVer();
+
+function getGHVer(): void{
+    let xhttp = new XMLHttpRequest();
+    xhttp.addEventListener('readystatechange', () => {
+        if(xhttp.readyState == 4){
+            if(xhttp.status == 200){
+                if(JSON.parse(xhttp.responseText).version !== version.innerHTML){
+                    version.append(` (Latest: ${JSON.parse(xhttp.responseText).version})`);
+                }
+            } else {
+                version.append(` (Error: ${xhttp.statusText})`);
+            }
+        } 
+    });
+    xhttp.open("GET", "https://raw.githubusercontent.com/JerryWester/ML64OoTCheatMenu/master/update.json");
+    xhttp.overrideMimeType("application/json");
+    xhttp.send();
+}
+
 
 class MapMessageHandlers {
     tunnel!: MessageLayer;
@@ -18,8 +41,21 @@ class MapMessageHandlers {
     }
 
     @TunnelMessageHandler("cheatmenu:SaveUpdate")
-    onSaveUpdate(evt: any){
+    onSaveUpdate(evt: cheatmenu_config){
         config = evt;
+        hearts.valueAsNumber = Math.floor(evt.hearts / 16) as number;
+        qhearts.valueAsNumber = Math.floor((evt.hearts / 4) % 4) as number;
+        magic.valueAsNumber = evt.magic / 2;
+        rupees.valueAsNumber = evt.rupees;
+        hour.valueAsNumber = Math.floor(evt.time / (65535 / 24));
+        minute.valueAsNumber = Math.floor((evt.time % (65535 / 24)) / (65535 / (24 * 60)));
+        dekuNuts.valueAsNumber = evt.dekuNuts;
+        dekuSticks.valueAsNumber = evt.dekuSticks;
+        seeds.valueAsNumber = evt.seeds;
+        bombs.valueAsNumber = evt.bombs;
+        bombchus.valueAsNumber = evt.bombchus;
+        beans.valueAsNumber = evt.beans;
+        arrows.valueAsNumber = evt.arrows;
         applyBtn.disabled = false;
     }
 
@@ -46,18 +82,18 @@ class MapMessageHandlers {
     }
 
     @TunnelMessageHandler("cheatmenu:TimeUpdate")
-    onTimeUpdate(evt: number){
+    onTimeUpdate(time: number){
         if(!document.hasFocus()){
-            hour.valueAsNumber = Math.floor(evt / (65535 / 24));
-            minute.valueAsNumber = Math.floor((evt % (65535 / 24)) / (65535 / (24 * 60)));
+            hour.valueAsNumber = Math.floor(time / (65535 / 24));
+            minute.valueAsNumber = Math.floor((time % (65535 / 24)) / (65535 / (24 * 60)));
         }
     }
 
     @TunnelMessageHandler("cheatmenu:PositionUpdate")
-    onPosUpdate(evt: Vector3){
-        posX.value = evt.x.toFixed(2);
-        posY.value = evt.y.toFixed(2);
-        posZ.value = evt.z.toFixed(2);
+    onPosUpdate(pos: Vector3){
+        posX.value = pos.x.toFixed(2);
+        posY.value = pos.y.toFixed(2);
+        posZ.value = pos.z.toFixed(2);
     }
 
     // @TunnelMessageHandler("cheatmenu:RotationUpdate")
@@ -153,6 +189,7 @@ let beans = document.getElementById("beans") as HTMLInputElement;
 let beansLocked = document.getElementById("beansLocked") as HTMLInputElement;
 let arrows = document.getElementById("arrows") as HTMLInputElement;
 let arrowsLocked = document.getElementById("arrowsLocked") as HTMLInputElement;
+let lbutton = document.getElementById("lbutton") as HTMLSelectElement;
 let applyBtn = document.getElementById("apply") as HTMLButtonElement;
 
 applyBtn.addEventListener("click", () => {
@@ -181,6 +218,7 @@ applyBtn.addEventListener("click", () => {
         config.beansLocked = beansLocked.checked;
         config.arrows = arrows.valueAsNumber;
         config.arrowsLocked = arrowsLocked.checked;
+        config.lbutton = lbutton.value;
         handlers.tunnel.send("forwardToML", {id: "cheatmenu:DataUpdate", data: config});
     }
 });

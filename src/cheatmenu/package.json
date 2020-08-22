@@ -1,6 +1,6 @@
 {
   "name": "cheatmenu",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A basic GUI for cheating in items. (Should be) OoTOnline safe",
   "main": "cheatmenu.js",
   "scripts": {

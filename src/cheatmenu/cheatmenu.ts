@@ -6,7 +6,7 @@ import {TunnelMessageHandler} from 'modloader64_api/GUITunnel';
 import {EventHandler} from 'modloader64_api/EventHandler';
 import Vector3 from 'modloader64_api/math/Vector3';
 
-class cheatmenu_config{
+export class cheatmenu_config{
     "hearts": number;
     "heartsLocked": boolean;
     "magic": number;
@@ -33,6 +33,7 @@ class cheatmenu_config{
     "beansLocked": boolean;
     "arrows": number;
     "arrowsLocked": boolean;
+    "lbutton": string;
     constructor(){
         this.heartsLocked = false;
         this.magicLocked = false;
@@ -49,6 +50,7 @@ class cheatmenu_config{
         this.bombchusLocked = false;
         this.beansLocked = false;
         this.arrowsLocked = false;
+        this.lbutton = "none";
     }
 }
 
@@ -104,10 +106,15 @@ class cheatmenu implements IPlugin{
             if(this.config.arrowsLocked){
                 this.core.save.inventory.arrows = this.config.arrows;
             }
-            // If "L" is pressed...
-            if(this.ModLoader.emulator.rdramRead8(0x1c84b5) === 0x20){
-                // ... Set upwards velocity (?)
-                this.ModLoader.emulator.rdramWrite16(0x1daa90, 0x40cb);
+            if(this.config.lbutton !== "none" && this.ModLoader.emulator.rdramRead8(0x1c84b5) === 0x20){
+                switch (this.config.lbutton){
+                    case "moonjump":
+                        this.ModLoader.emulator.rdramWrite16(0x1daa90, 0x40cb);
+                        break;
+                    case "turbospeed":
+                        this.ModLoader.emulator.rdramWrite8(0x1db258, 0x41);
+                        break;
+                }
             }
             
             if(this.config.hearts !== this.core.save.health){
@@ -194,6 +201,17 @@ class cheatmenu implements IPlugin{
     @EventHandler(OotEvents.ON_SAVE_LOADED)
     requestRefresh(){
         this.saveLoaded = true;
+        this.config.hearts = this.core.save.health;
+        this.config.magic = this.core.save.magic_current;
+        this.config.time = this.core.save.world_time;
+        this.config.rupees = this.core.save.rupee_count;
+        this.config.dekuNuts = this.core.save.inventory.dekuNutsCount;
+        this.config.dekuSticks = this.core.save.inventory.dekuSticksCount;
+        this.config.seeds = this.core.save.inventory.dekuSeeds;
+        this.config.bombs = this.core.save.inventory.bombsCount;
+        this.config.bombchus = this.core.save.inventory.bombchuCount;
+        this.config.beans = this.core.save.inventory.magicBeansCount;
+        this.config.arrows = this.core.save.inventory.arrows;
         this.ModLoader.gui.tunnel.send("cheatmenu:SaveUpdate", this.config);
     }
 }
