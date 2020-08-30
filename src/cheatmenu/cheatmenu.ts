@@ -108,12 +108,18 @@ class cheatmenu implements IPlugin{
             }
             if(this.config.lbutton !== "none" && this.ModLoader.emulator.rdramRead8(0x1c84b5) === 0x20){
                 switch (this.config.lbutton){
-                    case "moonjump":
+                    case "moonjump":{
                         this.ModLoader.emulator.rdramWrite16(0x1daa90, 0x40cb);
                         break;
-                    case "turbospeed":
+                    }
+                    case "turbospeed":{
                         this.ModLoader.emulator.rdramWrite8(0x1db258, 0x41);
                         break;
+                    }
+                    case "invedit":{
+                        this.ModLoader.emulator.rdramWrite8(0x1D8DD7, 0x02);
+                        break;
+                    }
                 }
             }
             
