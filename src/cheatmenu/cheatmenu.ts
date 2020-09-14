@@ -1,56 +1,128 @@
-import {IPlugin, IModLoaderAPI, ModLoaderEvents} from 'modloader64_api/IModLoaderAPI';
-import {IOOTCore, OotEvents} from 'modloader64_api/OOT/OOTAPI';
+import {IPlugin, IModLoaderAPI} from 'modloader64_api/IModLoaderAPI';
+import {IOOTCore, Ocarina, Hookshot, InventoryItem, AmmoUpgrade, Strength, ISaveContext, ISwords, IShields, IBoots, ITunics, ZoraScale, Magic, Wallet, OotEvents, VANILLA_KEY_INDEXES, Age, Sword} from 'modloader64_api/OOT/OOTAPI';
 import {InjectCore} from 'modloader64_api/CoreInjection';
-import path from 'path';
-import {TunnelMessageHandler} from 'modloader64_api/GUITunnel';
-import {EventHandler} from 'modloader64_api/EventHandler';
-import Vector3 from 'modloader64_api/math/Vector3';
+import { onViUpdate } from 'modloader64_api/PluginLifecycle';
+import { ComboFlags, number_ref, bool_ref, Cond } from 'modloader64_api/Sylvain/ImGui';
+import { EventHandler } from 'modloader64_api/EventHandler';
+import { xy } from 'modloader64_api/Sylvain/vec';
+import { renderMenuBar } from './gui/MenuBar';
+import { openPosWindow } from './gui/ModWindow';
 
-export class cheatmenu_config{
-    "hearts": number;
-    "heartsLocked": boolean;
-    "magic": number;
-    "magicLocked": boolean;
-    "rupees": number;
-    "rupeesLocked": boolean;
-    "time": number;
-    "timeLocked": boolean;
-    "position": Vector3;
-    "positionLocked": any;
-    "rotation": Vector3;
-    "rotationLocked": any;
-    "dekuNuts": number;
-    "dekuNutsLocked": boolean;
-    "dekuSticks": number;
-    "dekuSticksLocked": boolean;
-    "seeds": number;
-    "seedsLocked": boolean;
-    "bombs": number;
-    "bombsLocked": boolean;
-    "bombchus": number;
-    "bombchusLocked": boolean;
-    "beans": number;
-    "beansLocked": boolean;
-    "arrows": number;
-    "arrowsLocked": boolean;
-    "lbutton": string;
-    constructor(){
-        this.heartsLocked = false;
-        this.magicLocked = false;
-        this.rupeesLocked = false;
-        this.timeLocked = false;
-        this.position = new Vector3(0, 0, 0);
-        this.positionLocked = {x: false, y: false, z: false};
-        this.rotation = new Vector3(0, 0, 0);
-        this.rotationLocked = {x: false, y: false, z: false};
-        this.dekuNutsLocked = false;
-        this.dekuSticksLocked = false;
-        this.seedsLocked = false;
-        this.bombsLocked = false;
-        this.bombchusLocked = false;
-        this.beansLocked = false;
-        this.arrowsLocked = false;
-        this.lbutton = "none";
+interface coordRef {
+    lock: bool_ref;
+    mod: number_ref;
+    lockValue: number | undefined;
+}
+
+interface lock {
+    locked: bool_ref;
+    value: number_ref;
+}
+
+interface positionRef {
+    x: coordRef;
+    y: coordRef;
+    z: coordRef;
+}
+
+interface lockedItems {
+    hearts: lock;
+    magic: lock;
+    time: lock;
+    dekuSticks: lock;
+    dekuNuts: lock;
+    dekuSeeds: lock;
+    bombs: lock;
+    bombchus: lock;
+    magicBeans: lock;
+    arrows: lock;
+    forestTempleKeys: lock;
+    fireTempleKeys: lock;
+    waterTempleKeys: lock;
+    spiritTempleKeys: lock;
+    shadowTempleKeys: lock;
+    bottomOfTheWellKeys: lock;
+    gerudoFortressKeys: lock;
+    gerudoTrainingGroundsKeys: lock;
+    ganonsCastleKeys: lock;
+}
+
+export const lockedItems: lockedItems = {
+    hearts: {
+        locked: [false],
+        value: [0]
+    },
+    magic: {
+        locked: [false],
+        value: [0]
+    },
+    time: {
+        locked: [false],
+        value: [0]
+    },
+    dekuSticks: {
+        locked: [false],
+        value: [0]
+    },
+    dekuNuts: {
+        locked: [false],
+        value: [0]
+    },
+    dekuSeeds: {
+        locked: [false],
+        value: [0]
+    },
+    bombs: {
+        locked: [false],
+        value: [0]
+    },
+    bombchus: {
+        locked: [false],
+        value: [0]
+    },
+    magicBeans: {
+        locked: [false],
+        value: [0]
+    },
+    arrows: {
+        locked: [false],
+        value: [0]
+    },
+    forestTempleKeys: {
+        locked: [false],
+        value: [0]
+    },
+    fireTempleKeys: {
+        locked: [false],
+        value: [0]
+    },
+    waterTempleKeys: {
+        locked: [false],
+        value: [0]
+    },
+    spiritTempleKeys: {
+        locked: [false],
+        value: [0]
+    },
+    shadowTempleKeys: {
+        locked: [false],
+        value: [0]
+    },
+    bottomOfTheWellKeys: {
+        locked: [false],
+        value: [0]
+    },
+    gerudoFortressKeys: {
+        locked: [false],
+        value: [0]
+    },
+    gerudoTrainingGroundsKeys: {
+        locked: [false],
+        value: [0]
+    },
+    ganonsCastleKeys: {
+        locked: [false],
+        value: [0]
     }
 }
 
@@ -60,165 +132,107 @@ class cheatmenu implements IPlugin{
     pluginName?: string | undefined;
     @InjectCore()
     core!: IOOTCore;
-    config: cheatmenu_config = new cheatmenu_config();
-
-    saveLoaded: boolean = false;
 
     preinit(): void {
     }
     init(): void {
     }
     postinit(): void {
-        this.ModLoader.gui.openWindow(400, 600, path.resolve(__dirname, 'gui', 'index.html'));
     }
     onTick(frame?: number | undefined): void {
-        if(this.saveLoaded){
-            if(this.config.heartsLocked){
-                this.core.save.health = this.config.hearts;
+        if(this.positionMod.x.lockValue !== undefined){
+            if(this.positionMod.x.mod[0] !== 0){
+                this.positionMod.x.lockValue += this.positionMod.x.mod[0];
             }
-            if(this.config.magicLocked){
-                this.core.save.magic_current = this.config.magic;
+            this.core.link.position.x = this.positionMod.x.lockValue;
+        } else {
+            this.core.link.position.x += this.positionMod.x.mod[0];
+        }
+        if(this.positionMod.y.lockValue !== undefined){
+            if(this.positionMod.y.mod[0] !== 0){
+                this.positionMod.y.lockValue += this.positionMod.y.mod[0];
             }
-            if(this.config.rupeesLocked){
-                this.core.save.rupee_count = this.config.rupees;
+            this.core.link.position.y = this.positionMod.y.lockValue;
+        } else {
+            this.core.link.position.y += this.positionMod.y.mod[0];
+        }
+        if(this.positionMod.z.lockValue !== undefined){
+            if(this.positionMod.z.mod[0] !== 0){
+                this.positionMod.z.lockValue += this.positionMod.z.mod[0];
             }
-            if(this.config.timeLocked){
-                this.core.save.world_time = this.config.time;
-            }
-            if(this.config.dekuNutsLocked){
-                this.core.save.inventory.dekuNutsCount = this.config.dekuNuts;
-            }
-            if(this.config.dekuSticksLocked){
-                this.core.save.inventory.dekuSticksCount = this.config.dekuSticks;
-            }
-            if(this.config.seedsLocked){
-                this.core.save.inventory.dekuSeeds = this.config.seeds;
-            }
-            if(this.config.bombsLocked){
-                this.core.save.inventory.bombsCount = this.config.bombs;
-            }
-            if(this.config.bombchusLocked){
-                this.core.save.inventory.bombchuCount = this.config.bombchus;
-            }
-            if(this.config.beansLocked){
-                this.core.save.inventory.magicBeansCount = this.config.beans;
-            }
-            if(this.config.arrowsLocked){
-                this.core.save.inventory.arrows = this.config.arrows;
-            }
-            if(this.config.lbutton !== "none" && this.ModLoader.emulator.rdramRead8(0x1c84b5) === 0x20){
-                switch (this.config.lbutton){
-                    case "moonjump":{
-                        this.ModLoader.emulator.rdramWrite16(0x1daa90, 0x40cb);
-                        break;
-                    }
-                    case "turbospeed":{
-                        this.ModLoader.emulator.rdramWrite8(0x1db258, 0x41);
-                        break;
-                    }
-                    case "invedit":{
-                        this.ModLoader.emulator.rdramWrite8(0x1D8DD7, 0x02);
-                        break;
-                    }
-                }
-            }
-            
-            if(this.config.hearts !== this.core.save.health){
-                this.config.hearts = this.core.save.health;
-                this.ModLoader.gui.tunnel.send("cheatmenu:HealthUpdate", this.config.hearts);
-            }
-            if(this.config.magic !== this.core.save.magic_current){
-                this.config.magic = this.core.save.magic_current;
-                this.ModLoader.gui.tunnel.send("cheatmenu:MagicUpdate", this.config.magic);
-            }
-            if(this.config.rupees !== this.core.save.rupee_count){
-                this.config.rupees = this.core.save.rupee_count;
-                this.ModLoader.gui.tunnel.send("cheatmenu:RupeeUpdate", this.config.rupees);
-            }
-            if(this.config.time !== this.core.save.world_time){
-                this.config.time = this.core.save.world_time;
-                this.ModLoader.gui.tunnel.send("cheatmenu:TimeUpdate", this.config.time);
-            }
-            if(this.config.dekuNuts !== this.core.save.inventory.dekuNutsCount){
-                this.config.dekuNuts = this.core.save.inventory.dekuNutsCount;
-                this.ModLoader.gui.tunnel.send("cheatmenu:DekuNutUpdate", this.config.dekuNuts);
-            }
-            if(this.config.dekuSticks !== this.core.save.inventory.dekuSticksCount){
-                this.config.dekuSticks = this.core.save.inventory.dekuSticksCount;
-                this.ModLoader.gui.tunnel.send("cheatmenu:DekuStickUpdate", this.config.dekuSticks);
-            }
-            if(this.config.seeds !== this.core.save.inventory.dekuSeeds){
-                this.config.seeds = this.core.save.inventory.dekuSeeds;
-                this.ModLoader.gui.tunnel.send("cheatmenu:SeedUpdate", this.config.seeds);
-            }
-            if(this.config.bombs !== this.core.save.inventory.bombsCount){
-                this.config.bombs = this.core.save.inventory.bombsCount;
-                this.ModLoader.gui.tunnel.send("cheatmenu:BombUpdate", this.config.bombs);
-            }
-            if(this.config.bombchus !== this.core.save.inventory.bombchuCount){
-                this.config.bombchus = this.core.save.inventory.bombchuCount;
-                this.ModLoader.gui.tunnel.send("cheatmenu:BombchuUpdate", this.config.bombchus);
-            }
-            if(this.config.beans !== this.core.save.inventory.magicBeansCount){
-                this.config.beans = this.core.save.inventory.magicBeansCount;
-                this.ModLoader.gui.tunnel.send("cheatmenu:BeanUpdate", this.config.bombchus);
-            }
-            if(this.config.arrows !== this.core.save.inventory.arrows){
-                this.config.arrows = this.core.save.inventory.arrows;
-                this.ModLoader.gui.tunnel.send("cheatmenu:ArrowUpdate", this.config.arrows);
-            }
-            if(this.config.position.x !== this.core.link.position.getRawPos().readFloatBE(0) || this.config.position.y !== this.core.link.position.getRawPos().readFloatBE(4) || this.config.position.z !== this.core.link.position.getRawPos().readFloatBE(8)){
-                this.config.position.x = this.core.link.position.getRawPos().readFloatBE(0);
-                this.config.position.y = this.core.link.position.getRawPos().readFloatBE(4);
-                this.config.position.z = this.core.link.position.getRawPos().readFloatBE(8);
-                this.ModLoader.gui.tunnel.send("cheatmenu:PositionUpdate", this.config.position);
-            }
-            // if(this.config.rotation.x !== this.core.link.rotation.getRawRot().readFloatBE(0) || this.config.rotation.y !== this.core.link.rotation.getRawRot().readFloatBE(1) || this.config.rotation.z !== this.core.link.rotation.getRawRot().readFloatBE(2)){
-            //     this.config.rotation.x = this.core.link.rotation.getRawRot().readFloatBE(0);
-            //     this.config.rotation.y = this.core.link.rotation.getRawRot().readFloatBE(1);
-            //     this.config.rotation.z = this.core.link.rotation.getRawRot().readFloatBE(2);
-            //     this.ModLoader.gui.tunnel.send("cheatmenu:RotationUpdate", this.config.rotation);
-            // }
+            this.core.link.position.z = this.positionMod.z.lockValue;
+        } else {
+            this.core.link.position.z += this.positionMod.z.mod[0];
         }
     }
-
-    @TunnelMessageHandler("cheatmenu:DataUpdate")
-    onUpdate(packet: any){
-        this.ModLoader.logger.debug(`Received packet`);
-        this.config = packet.data;
-        this.update();
+    
+    positionMod: positionRef = {
+        x: {
+            lock: [false],
+            mod: [0],
+            lockValue: undefined
+        },
+        y: {
+            lock: [false],
+            mod: [0],
+            lockValue: undefined
+        },
+        z: {
+            lock: [false],
+            mod: [0],
+            lockValue: undefined
+        },
     }
 
-    update(){
-        this.core.save.health = this.config.hearts;
-        this.core.save.magic_current = this.config.magic;
-        this.core.save.world_time = this.config.time
-        this.core.save.rupee_count = this.config.rupees;
-        this.core.save.inventory.dekuNutsCount = this.config.dekuNuts;
-        this.core.save.inventory.dekuSticksCount = this.config.dekuSticks;
-        this.core.save.inventory.dekuSeeds = this.config.seeds;
-        this.core.save.inventory.bombsCount = this.config.bombs;
-        this.core.save.inventory.bombchuCount = this.config.bombchus;
-        this.core.save.inventory.magicBeansCount = this.config.beans;
-        this.core.save.inventory.arrows = this.config.arrows;
-    }
+    // @EventHandler(OotEvents.ON_SAVE_LOADED)
+    // onSaveLoaded(){
+    // }
 
-
-    @EventHandler(OotEvents.ON_SAVE_LOADED)
-    requestRefresh(){
-        this.saveLoaded = true;
-        this.config.hearts = this.core.save.health;
-        this.config.magic = this.core.save.magic_current;
-        this.config.time = this.core.save.world_time;
-        this.config.rupees = this.core.save.rupee_count;
-        this.config.dekuNuts = this.core.save.inventory.dekuNutsCount;
-        this.config.dekuSticks = this.core.save.inventory.dekuSticksCount;
-        this.config.seeds = this.core.save.inventory.dekuSeeds;
-        this.config.bombs = this.core.save.inventory.bombsCount;
-        this.config.bombchus = this.core.save.inventory.bombchuCount;
-        this.config.beans = this.core.save.inventory.magicBeansCount;
-        this.config.arrows = this.core.save.inventory.arrows;
-        this.ModLoader.gui.tunnel.send("cheatmenu:SaveUpdate", this.config);
+    @onViUpdate()
+    onViUpdate(){
+        renderMenuBar(this.core, this.ModLoader.ImGui);
+        
+        if(openPosWindow[0]){
+            if(this.ModLoader.ImGui.begin("Position", openPosWindow)){
+                this.ModLoader.ImGui.setWindowSize(xy(300, 200), Cond.FirstUseEver);
+                this.positionMod.x.mod = [0];
+                this.positionMod.y.mod = [0];
+                this.positionMod.z.mod = [0];
+                this.ModLoader.ImGui.text(`X: ${this.core.link.position.x} + `);
+                this.ModLoader.ImGui.sliderFloat("##x", this.positionMod.x.mod, -32, 32)
+                this.ModLoader.ImGui.sameLine();
+                if(this.ModLoader.ImGui.checkbox("##xLock", this.positionMod.x.lock)){
+                    if(this.positionMod.x.lock[0]){
+                        this.positionMod.x.lockValue = this.core.link.position.x;
+                    } else {
+                        this.positionMod.x.lockValue = undefined;
+                    }
+                }
+                
+                this.ModLoader.ImGui.text(`Y: ${this.core.link.position.y} + `);
+                this.ModLoader.ImGui.sliderFloat("##y", this.positionMod.y.mod, -32, 32)
+                this.ModLoader.ImGui.sameLine();
+                if(this.ModLoader.ImGui.checkbox("##yLock", this.positionMod.y.lock)){
+                    if(this.positionMod.y.lock[0]){
+                        this.positionMod.y.lockValue = this.core.link.position.y;
+                    } else {
+                        this.positionMod.y.lockValue = undefined;
+                    }
+                }
+                
+                this.ModLoader.ImGui.text(`Z: ${this.core.link.position.z} + `);
+                this.ModLoader.ImGui.sliderFloat("##z", this.positionMod.z.mod, -32, 32)
+                this.ModLoader.ImGui.sameLine();
+                if(this.ModLoader.ImGui.checkbox("##zLock", this.positionMod.z.lock)){
+                    if(this.positionMod.z.lock[0]){
+                        this.positionMod.z.lockValue = this.core.link.position.z;
+                    } else {
+                        this.positionMod.z.lockValue = undefined;
+                    }
+                }
+                this.ModLoader.ImGui.end();
+            }
+        }
     }
 }
 
