@@ -15,5 +15,15 @@
   },
   "keywords": [],
   "author": "JerryWester",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0"
+  },
+  "bugs": {
+    "url": "https://github.com/JerryWester/ML64OoTCheatMenu/issues"
+  },
+  "homepage": "https://github.com/JerryWester/ML64OoTCheatMenu#readme",
+  "dependencies": {}
 }
