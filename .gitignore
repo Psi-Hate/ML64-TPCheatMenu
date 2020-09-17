@@ -1,11 +1,10 @@
-node_modules/
-dist/
-cores/
-build/
-roms/
-.vscode/
-src/cheatmenu/payloads/
-modloader64-config.json
-modloader64-p2-config.json
-CustomActorToolkit/
-libs/
+# Ignore all files...
+*
+
+# Except for these ones
+!/package.json
+!/package-lock.json
+!/src
+!/src/**
+!/src/**/*.*
+!/.gitignore

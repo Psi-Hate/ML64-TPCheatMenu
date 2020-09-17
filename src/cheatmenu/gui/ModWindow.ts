@@ -1,4 +1,4 @@
-import { bool_ref, IImGui, number_ref, Cond } from "modloader64_api/Sylvain/ImGui";
+import { bool_ref, IImGui, number_ref, Cond, MouseButton } from "modloader64_api/Sylvain/ImGui";
 import { IOOTCore } from "modloader64_api/OOT/OOTAPI";
 import { xy } from "modloader64_api/Sylvain/vec";
 import { renderLinkMenu } from './LinkMenu';
@@ -118,7 +118,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
     if(ImGui.beginTabBar("Dungeon")){
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.dekuTree[0]){
             if(ImGui.beginTabItem("Inside the Deku Tree")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.dekuTree[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.dekuTree[0];
                 }
                 renderDungeonItems.dekuTree(core, ImGui);
@@ -127,7 +127,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.dodongosCavern[0]){
             if(ImGui.beginTabItem("Dodongo's Cavern")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.dodongosCavern[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.dodongosCavern[0];
                 }
                 renderDungeonItems.dodongosCavern(core, ImGui);
@@ -136,7 +136,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.jabuJabusBelly[0]){
             if(ImGui.beginTabItem("Inside Jabu-Jabu's Belly")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.jabuJabusBelly[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.jabuJabusBelly[0];
                 }
                 renderDungeonItems.jabuJabusBelly(core, ImGui);
@@ -145,7 +145,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.forestTemple[0]){
             if(ImGui.beginTabItem("Forest Temple")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.forestTemple[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.forestTemple[0];
                 }
                 renderDungeonItems.forestTemple(core, ImGui);
@@ -154,7 +154,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.fireTemple[0]){
             if(ImGui.beginTabItem("Fire Temple")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.fireTemple[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.fireTemple[0];
                 }
                 renderDungeonItems.fireTemple(core, ImGui);
@@ -163,7 +163,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.waterTemple[0]){
             if(ImGui.beginTabItem("Water Temple")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.waterTemple[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.waterTemple[0];
                 }
                 renderDungeonItems.waterTemple(core, ImGui);
@@ -172,7 +172,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.shadowTemple[0]){
             if(ImGui.beginTabItem("Shadow Temple")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.shadowTemple[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.shadowTemple[0];
                 }
                 renderDungeonItems.shadowTemple(core, ImGui);
@@ -181,7 +181,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.spiritTemple[0]){
             if(ImGui.beginTabItem("Spirit Temple")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.spiritTemple[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.spiritTemple[0];
                 }
                 renderDungeonItems.spiritTemple(core, ImGui);
@@ -190,7 +190,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.bottomOfTheWell[0]){
             if(ImGui.beginTabItem("Bottom Of The Well")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.bottomOfTheWell[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.bottomOfTheWell[0];
                 }
                 renderDungeonItems.bottomOfTheWell(core, ImGui);
@@ -199,7 +199,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.iceCavern[0]){
             if(ImGui.beginTabItem("Ice Cavern")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.iceCavern[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.iceCavern[0];
                 }
                 renderDungeonItems.iceCavern(core, ImGui);
@@ -208,7 +208,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.gerudoFortress[0]){
             if(ImGui.beginTabItem("Gerudo Fortress")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.gerudoFortress[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.gerudoFortress[0];
                 }
                 renderDungeonItems.gerudoFortress(core, ImGui);
@@ -217,7 +217,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.gerudoTrainingGrounds[0]){
             if(ImGui.beginTabItem("Gerudo Training Grounds")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.gerudoTrainingGrounds[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.gerudoTrainingGrounds[0];
                 }
                 renderDungeonItems.gerudoTrainingGrounds(core, ImGui);
@@ -226,7 +226,7 @@ function renderDungeonItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.dungeonTabs.ganonsCastle[0]){
             if(ImGui.beginTabItem("Ganon's Castle")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeonTabs.ganonsCastle[0] = !modWindows.itemsTabs.questTabs.dungeonTabs.ganonsCastle[0];
                 }
                 renderDungeonItems.ganonsCastle(core, ImGui);
@@ -241,7 +241,7 @@ function renderQuestItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
     if(ImGui.beginTabBar("Quest")){
         if(!modWindows.itemsTabs.questTabs.dungeon[0]){
             if(ImGui.beginTabItem("Dungeon")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.dungeon[0] = !modWindows.itemsTabs.questTabs.dungeon[0];
                 }
                 renderDungeonItemsMenuTabs(core, ImGui);
@@ -250,7 +250,7 @@ function renderQuestItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.songs[0]){
             if(ImGui.beginTabItem("Songs")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.songs[0] = !modWindows.itemsTabs.questTabs.songs[0];
                 }
                 renderQuestItems.songsMenu(core, ImGui);
@@ -259,7 +259,7 @@ function renderQuestItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.gems[0]){
             if(ImGui.beginTabItem("Gems")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.gems[0] = !modWindows.itemsTabs.questTabs.gems[0];
                 }
                 renderQuestItems.gemsMenu(core, ImGui);
@@ -268,7 +268,7 @@ function renderQuestItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.medallions[0]){
             if(ImGui.beginTabItem("Medallions")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.medallions[0] = !modWindows.itemsTabs.questTabs.medallions[0];
                 }
                 renderQuestItems.medallionsMenu(core, ImGui);
@@ -277,7 +277,7 @@ function renderQuestItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.goldSkulltulas[0]){
             if(ImGui.beginTabItem("Gold Skulltulas")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.goldSkulltulas[0] = !modWindows.itemsTabs.questTabs.goldSkulltulas[0];
                 }
                 renderQuestItems.goldSkulltulas(core, ImGui);
@@ -286,7 +286,7 @@ function renderQuestItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.questTabs.misc[0]){
             if(ImGui.beginTabItem("Misc")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.questTabs.misc[0] = !modWindows.itemsTabs.questTabs.misc[0];
                 }
                 renderQuestItems.stoneOfAgony(core, ImGui);
@@ -302,7 +302,7 @@ function renderItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
     if(ImGui.beginTabBar("Items")){
         if(!modWindows.itemsTabs.equipment[0]){
             if(ImGui.beginTabItem("Equipment")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.equipment[0] = !modWindows.itemsTabs.equipment[0];
                 }
                 renderEquipmentMenu(core, ImGui);
@@ -311,7 +311,7 @@ function renderItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.cbutton[0]){
             if(ImGui.beginTabItem("C-Button Items")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.cbutton[0] = !modWindows.itemsTabs.cbutton[0];
                 }
                 renderCButtonItemMenu(core, ImGui);
@@ -320,7 +320,7 @@ function renderItemsMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.itemsTabs.quest[0]){
             if(ImGui.beginTabItem("Quest Items")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.itemsTabs.quest[0] = !modWindows.itemsTabs.quest[0];
                 }
                 renderQuestItemsMenuTabs(core, ImGui);
@@ -335,7 +335,7 @@ function renderCheatMenuTabs(core: IOOTCore, ImGui: IImGui){
     if(ImGui.beginTabBar("##cheatMenuTabs")){
         if(!modWindows.link[0]){
             if(ImGui.beginTabItem("Link")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.link[0] = !modWindows.link[0];
                 }
                 renderLinkMenu(core, ImGui);
@@ -344,7 +344,7 @@ function renderCheatMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.items[0]){
             if(ImGui.beginTabItem("Items")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.items[0] = !modWindows.items[0];
                 }
                 renderItemsMenuTabs(core, ImGui)
@@ -353,7 +353,7 @@ function renderCheatMenuTabs(core: IOOTCore, ImGui: IImGui){
         }
         if(!modWindows.consumables[0]){
             if(ImGui.beginTabItem("Consumables")){
-                if(ImGui.button("Pop-out")){
+                if(ImGui.isItemClicked(MouseButton.Right)){
                     modWindows.consumables[0] = !modWindows.consumables[0];
                 }
                 renderConsumablesMenu(core, ImGui);
@@ -438,10 +438,89 @@ export function renderModWindow(core: IOOTCore, ImGui: IImGui){
             ImGui.end();
         }
     }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.dekuTree[0]){
+        if(ImGui.begin("Inside the Deku Tree", modWindows.itemsTabs.questTabs.dungeonTabs.dekuTree)){
+            renderDungeonItems.dekuTree(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.dodongosCavern[0]){
+        if(ImGui.begin("Dodongo's Cavern", modWindows.itemsTabs.questTabs.dungeonTabs.dodongosCavern)){
+            renderDungeonItems.dodongosCavern(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.jabuJabusBelly[0]){
+        if(ImGui.begin("Inside Jabu-Jabu's Belly", modWindows.itemsTabs.questTabs.dungeonTabs.jabuJabusBelly)){
+            renderDungeonItems.jabuJabusBelly(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.forestTemple[0]){
+        if(ImGui.begin("Forest Temple", modWindows.itemsTabs.questTabs.dungeonTabs.forestTemple)){
+            renderDungeonItems.forestTemple(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.fireTemple[0]){
+        if(ImGui.begin("Fire Temple", modWindows.itemsTabs.questTabs.dungeonTabs.fireTemple)){
+            renderDungeonItems.fireTemple(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.waterTemple[0]){
+        if(ImGui.begin("Water Temple", modWindows.itemsTabs.questTabs.dungeonTabs.waterTemple)){
+            renderDungeonItems.waterTemple(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.shadowTemple[0]){
+        if(ImGui.begin("Shadow Temple", modWindows.itemsTabs.questTabs.dungeonTabs.shadowTemple)){
+            renderDungeonItems.shadowTemple(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.spiritTemple[0]){
+        if(ImGui.begin("Spirit Temple", modWindows.itemsTabs.questTabs.dungeonTabs.spiritTemple)){
+            renderDungeonItems.spiritTemple(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.bottomOfTheWell[0]){
+        if(ImGui.begin("Bottom Of The Well", modWindows.itemsTabs.questTabs.dungeonTabs.bottomOfTheWell)){
+            renderDungeonItems.bottomOfTheWell(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.iceCavern[0]){
+        if(ImGui.begin("Ice Cavern", modWindows.itemsTabs.questTabs.dungeonTabs.iceCavern)){
+            renderDungeonItems.iceCavern(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.gerudoFortress[0]){
+        if(ImGui.begin("Gerudo Fortress", modWindows.itemsTabs.questTabs.dungeonTabs.gerudoFortress)){
+            renderDungeonItems.gerudoFortress(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.gerudoTrainingGrounds[0]){
+        if(ImGui.begin("Gerudo Training Grounds", modWindows.itemsTabs.questTabs.dungeonTabs.gerudoTrainingGrounds)){
+            renderDungeonItems.gerudoTrainingGrounds(core, ImGui);
+            ImGui.end();
+        }
+    }
+    if(modWindows.itemsTabs.questTabs.dungeonTabs.ganonsCastle[0]){
+        if(ImGui.begin("Ganon's Castle", modWindows.itemsTabs.questTabs.dungeonTabs.ganonsCastle)){
+            renderDungeonItems.ganonsCastle(core, ImGui);
+            ImGui.end();
+        }
+    }
 
     if(openModWindow[0]){
         if(ImGui.begin("Cheat Menu", openModWindow)){
             ImGui.setWindowSize(xy(300, 500), Cond.FirstUseEver);
+            ImGui.text("Right-click on a tab to pop it out");
             renderCheatMenuTabs(core, ImGui);
             ImGui.end();
         }

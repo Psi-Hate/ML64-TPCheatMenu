@@ -10,8 +10,5 @@
   "author": "JerryWester",
   "license": "MIT License",
   "updateUrl": "https://raw.githubusercontent.com/JerryWester/ML64OoTCheatMenu/master/update.json",
-  "core": "OcarinaofTime",
-  "modloader64_deps": {
-    "Z64Lib": "https://github.com/hylian-modding/ML64-Z64Lib.git"
-  }
+  "core": "OcarinaofTime"
 }

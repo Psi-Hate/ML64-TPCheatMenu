@@ -1,6 +1,6 @@
 import { IImGui, number_ref, ComboFlags } from "modloader64_api/Sylvain/ImGui";
 import { IOOTCore } from "modloader64_api/OOT/OOTAPI";
-import { changeAge, currentScene, lockedItems } from "@cheatmenu/cheatmenu";
+import { changeAge, entranceIndex, lockedItems } from "@cheatmenu/cheatmenu";
 import { openPosWindow } from "./ModWindow";
 
 export function renderLinkMenu(core: IOOTCore, ImGui: IImGui){
@@ -23,7 +23,7 @@ export function renderLinkMenu(core: IOOTCore, ImGui: IImGui){
     }
     if(ImGui.beginCombo("Hearts", "", ComboFlags.NoPreview)){
         if(!lockedItems.hearts.locked[0]){
-            lockedItems.hearts.value[0] = core.save.health /16;
+            lockedItems.hearts.value[0] = core.save.health / 16;
         }
         if(ImGui.sliderFloat("##health", lockedItems.hearts.value, 0, core.save.heart_containers)){
             core.save.health = Math.round(lockedItems.hearts.value[0] * 4) * 4;
@@ -68,9 +68,9 @@ export function renderLinkMenu(core: IOOTCore, ImGui: IImGui){
     }
     ImGui.checkbox("Position", openPosWindow);
     if(ImGui.beginCombo("Teleport to Area", "", ComboFlags.NoPreview)){
-        ImGui.inputTextWithHint("##changeScene", "Scene Number", currentScene);
+        ImGui.inputTextWithHint("##changeScene", "Scene Number", entranceIndex);
         if (ImGui.button("Warp")){
-            core.commandBuffer.runWarp(parseInt(currentScene[0], 16), 0, ()=>{});
+            core.commandBuffer.runWarp(parseInt(entranceIndex[0], 16), 0, ()=>{});
         }
         ImGui.endCombo();
     }

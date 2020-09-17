@@ -126,7 +126,7 @@ export const lockedItems: lockedItems = {
 }
 
 export const changeAge: bool_ref = [false];
-export const currentScene: string_ref = ["0"];
+export const entranceIndex: string_ref = ["0"];
 
 class cheatmenu implements IPlugin{
 
@@ -143,10 +143,10 @@ class cheatmenu implements IPlugin{
     }
     onTick(frame?: number | undefined): void {
         if(lockedItems.hearts.locked[0]){
-            this.core.save.health = lockedItems.hearts.value[0];
+            this.core.save.health = lockedItems.hearts.value[0] * 16;
         }
         if(lockedItems.magic.locked[0]){
-            this.core.save.magic_current = lockedItems.magic.value[0];
+            this.core.save.magic_current = lockedItems.magic.value[0] * 2;
         }
         if(lockedItems.time.locked[0]){
             this.core.save.world_time = lockedItems.time.value[0];
@@ -203,6 +203,11 @@ class cheatmenu implements IPlugin{
         } else {
             this.core.link.position.z += positionMod.z.mod[0];
         }
+    }
+
+    @EventHandler(OotEvents.ON_SCENE_CHANGE)
+    onSceneChange(){
+        entranceIndex[0] = this.core.save.entrance_index.toString(16);
     }
 
     @onViUpdate()
