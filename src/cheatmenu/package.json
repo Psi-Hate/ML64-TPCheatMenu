@@ -1,14 +1,17 @@
 {
   "name": "cheatmenu",
-  "version": "1.0.0",
-  "description": "A basic GUI for cheating in Ocarina of Time.",
+  "version": "2.0.0",
+  "description": "",
   "main": "cheatmenu.js",
+  "core": "*",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "JerryWester",
-  "license": "MIT License",
-  "updateUrl": "https://raw.githubusercontent.com/JerryWester/ML64OoTCheatMenu/master/update.json",
-  "core": "OcarinaofTime"
+  "author": "",
+  "license": "ISC",
+  "updateUrl": "https://raw.githubusercontent.com/JerryWester/ML64-Z64CheatMenu/master/update.json",
+  "modloader64_deps": {
+    "MajorasMask": "https://github.com/hylian-modding/Core-MajorasMask"
+  }
 }

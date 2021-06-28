@@ -4,6 +4,7 @@
 # Except for these ones
 !/package.json
 !/package-lock.json
+!/yarn.lock
 !/src
 !/src/**
 !/src/**/*.*

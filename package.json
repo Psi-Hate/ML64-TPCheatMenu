@@ -1,26 +1,17 @@
 {
   "name": "cheatmenu",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JerryWester/ML64OoTCheatMenu.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JerryWester/ML64OoTCheatMenu/issues"
-  },
-  "homepage": "https://github.com/JerryWester/ML64OoTCheatMenu#readme",
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
-    "eslint": "^7.9.0"
+  "modloader64_deps": {
+    "MajorasMask": "https://github.com/hylian-modding/Core-MajorasMask"
   },
   "dependencies": {},
+  "devDependencies": {},
   "description": ""
 }
