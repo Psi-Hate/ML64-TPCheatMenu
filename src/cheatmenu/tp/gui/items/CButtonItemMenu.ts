@@ -130,11 +130,11 @@ export function renderCButtonItemMenu(core: ITPCore, ImGui: IImGui){
     }
     if(ImGui.beginCombo("Bottles", "", ComboFlags.NoPreview)){
         if(ImGui.beginCombo("Bottle 1", "", ComboFlags.NoPreview)){
-            if(ImGui.selectable("None", core.save.inventory.bottle1 === InventoryItem.bottle_empty)){
-                core.save.inventory.bottle1 = InventoryItem.bottle_empty;
+            if(ImGui.selectable("None", core.save.inventory.bottle1 === InventoryItem.NONE)){
+                core.save.inventory.bottle1 = InventoryItem.NONE;
             }
-            if(ImGui.selectable("Empty Bottle", core.save.inventory.bottle1 === InventoryItem.bombEmpty)){
-                core.save.inventory.bottle1 = InventoryItem.bombEmpty;
+            if(ImGui.selectable("Empty Bottle", core.save.inventory.bottle1 === InventoryItem.bottle_empty)){
+                core.save.inventory.bottle1 = InventoryItem.bottle_empty;
             }
             if(ImGui.selectable("Red Potion", core.save.inventory.bottle1 === InventoryItem.RedPotion)){
                 core.save.inventory.bottle1 = InventoryItem.RedPotion;
@@ -205,8 +205,8 @@ export function renderCButtonItemMenu(core: ITPCore, ImGui: IImGui){
             if(ImGui.selectable("None", core.save.inventory.bottle2 === InventoryItem.NONE)){
                 core.save.inventory.bottle2 = InventoryItem.NONE;
             }
-            if(ImGui.selectable("Empty Bottle", core.save.inventory.bottle2 === InventoryItem.bombEmpty)){
-                core.save.inventory.bottle2 = InventoryItem.bombEmpty;
+            if(ImGui.selectable("Empty Bottle", core.save.inventory.bottle2 === InventoryItem.bottle_empty)){
+                core.save.inventory.bottle2 = InventoryItem.bottle_empty;
             }
             if(ImGui.selectable("Red Potion", core.save.inventory.bottle2 === InventoryItem.RedPotion)){
                 core.save.inventory.bottle2 = InventoryItem.RedPotion;
@@ -277,8 +277,8 @@ export function renderCButtonItemMenu(core: ITPCore, ImGui: IImGui){
             if(ImGui.selectable("None", core.save.inventory.bottle3 === InventoryItem.NONE)){
                 core.save.inventory.bottle3 = InventoryItem.NONE;
             }
-            if(ImGui.selectable("Empty Bottle", core.save.inventory.bottle3 === InventoryItem.bombEmpty)){
-                core.save.inventory.bottle3 = InventoryItem.bombEmpty;
+            if(ImGui.selectable("Empty Bottle", core.save.inventory.bottle3 === InventoryItem.bottle_empty)){
+                core.save.inventory.bottle3 = InventoryItem.bottle_empty;
             }
             if(ImGui.selectable("Red Potion", core.save.inventory.bottle3 === InventoryItem.RedPotion)){
                 core.save.inventory.bottle3 = InventoryItem.RedPotion;
@@ -349,8 +349,8 @@ export function renderCButtonItemMenu(core: ITPCore, ImGui: IImGui){
             if(ImGui.selectable("None", core.save.inventory.bottle4 === InventoryItem.NONE)){
                 core.save.inventory.bottle4 = InventoryItem.NONE;
             }
-            if(ImGui.selectable("Empty Bottle", core.save.inventory.bottle4 === InventoryItem.bombEmpty)){
-                core.save.inventory.bottle4 = InventoryItem.bombEmpty;
+            if(ImGui.selectable("Empty Bottle", core.save.inventory.bottle4 === InventoryItem.bottle_empty)){
+                core.save.inventory.bottle4 = InventoryItem.bottle_empty;
             }
             if(ImGui.selectable("Red Potion", core.save.inventory.bottle4 === InventoryItem.RedPotion)){
                 core.save.inventory.bottle4 = InventoryItem.RedPotion;
