@@ -2,7 +2,7 @@ import { IModLoaderAPI, IPlugin } from 'modloader64_api/IModLoaderAPI';
 import { SidedProxy, ProxySide } from 'modloader64_api/SidedProxy/SidedProxy';
 import { CheatmenuClient } from './cheatmenuClient';
 
-class cheatmenu implements IPlugin {
+class wwcheatmenu implements IPlugin {
 
     ModLoader!: IModLoaderAPI;
     @SidedProxy(ProxySide.CLIENT, CheatmenuClient)
@@ -15,4 +15,4 @@ class cheatmenu implements IPlugin {
 
 }
 
-module.exports = cheatmenu;
+module.exports = wwcheatmenu;

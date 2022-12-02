@@ -12,6 +12,6 @@
   "license": "ISC",
   "updateUrl": "https://raw.githubusercontent.com/JerryWester/ML64-Z64CheatMenu/master/update.json",
   "modloader64_deps": {
-    "MajorasMask": "https://github.com/hylian-modding/Core-MajorasMask"
+    "WindWaker": "https://github.com/hylian-modding/Core-WindWaker"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "cheatmenu",
-  "version": "2.0.0",
+  "name": "WWCheatMenu",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "modloader64_deps": {
-    "MajorasMask": "https://github.com/hylian-modding/Core-MajorasMask"
+    "WindWaker": "https://github.com/hylian-modding/Core-WindWaker"
   },
   "dependencies": {},
   "devDependencies": {},
